@@ -1,0 +1,17 @@
+#!/bin/bash
+username=$1
+d1=$2
+d2=$3
+if [ -z $username ];then
+    echo '请输入要查看日志的用户'
+    exit
+fi
+if [ -z $d1 ]; then
+    d1=`date -d yesterday +%F`
+fi
+if [ -z $d2 ]; then
+    d2=`date -d tomorrow  +%F`
+fi
+svn log -v -r {$d1}:{$d2}| sed -n "/$username/,/------$/p"
+#svn log -v -r {$d1} | sed -n "/$username/,/------$/p"
+#svn log -v | sed -n "/$username | $d/,/------$/p"

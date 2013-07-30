@@ -1,0 +1,14 @@
+#!/bin/bash
+username=$1
+version=$2
+if [ -z $username ]; then
+    svn st -u -v | grep '*' | awk -F '*' '{print $2}' | awk '{if ($1 !~ /^[0-9]+$/) {print $1}}'
+else
+    if [ -z $version ];then
+        svn st -u -v | grep '*' | grep "$username" | awk -F "$username" '{print $2}'
+        #svn st -u -v | grep '*' | grep "$username" | awk -F "$username" '{print $2}' | xargs svn up
+    else
+        #svn st -u -v | grep '*' | grep "$username" | grep "$version" | awk -F "$username" '{print $2}' | xargs svn up
+        svn st -u -v | grep '*' | grep "$username" | grep "$version" | awk -F "$username" '{print $2}'
+    fi
+fi
