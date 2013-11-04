@@ -1,14 +1,32 @@
 #!/bin/bash
 ver=$1
+# 获得svn的更新日志
 svn log -v -r $ver | sed -n "/paths:/,/------$/p" > ~/svn.log
-# 删除第一行
-#sed '1d' ~/svn.log > ~/svn1.log
-# 删除最后两行
-#sed '$d' ~/svn1.log > ~/svn.log
-#sed '$d' ~/svn.log > ~/svn1.log
+
 # 删除第一行和最后两行
 sed '1d;N;$d;P;D' ~/svn.log | sed '/^$/d' > ~/svn1.log
+
 # 获得更新文件
 cat ~/svn1.log | awk '{print $2}' | sed 's/^.//g' > ~/svn.log
+
+# 提取文件做备份
+#for i in `cat ~/svn.log`;do
+#    _dir=`dirname $i`
+#    _path="/root/to8to_web/${_dir}/"
+#    mkdir -p $_path
+#    cp $i $_path
+#    echo $i ' backup ok'
+#done
+#exit
+
 # svn 更新到指定版本
 cat ~/svn.log | xargs svn up -r $ver
+
+# 提取更新后的文件
+for i in `cat ~/svn.log`;do
+    _dir=`dirname $i`
+    _path="/root/update/$_dir/"
+    mkdir -p $_path
+    cp $i $_path
+    echo $i 'publish ok'
+done
