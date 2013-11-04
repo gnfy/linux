@@ -1,8 +1,41 @@
 #!/bin/bash
 username=$1
 version=$2
+filepath=~/svnupdatefile.log
 if [ -z $username ]; then
-    svn st -u -v | grep '*' | awk -F '*' '{print $2}' | awk '{if ($1 !~ /^[0-9]+$/) {print $1}}'
+    echo 需要更新的文件列表:
+    svn st -u -v | grep '*' > $filepath
+    cat $filepath
+    #svn st -u -v | grep '*' | awk -F '*' '{print $2}' | awk '{if ($1 !~ /^[0-9]+$/) {print $1}}'
+fi
+echo '1) 更新新加文件(首选)'
+echo '2) 根据版本/用户更新文件'
+read -p '请选择对应的操作类型:' num
+reg=`echo $num | awk '/^[0-9]*$/{print $0}'`
+if [ $reg ];then
+    if [ $num -eq 1 ]; then
+        cat $filepath | grep '*' | awk -F '*' '{print $2}' | awk '{if ($1 !~ /^[0-9]+$/) {print $0}}'
+    elif [ $num -eq 2 ]; then
+        read -p '请输入要更新文件所属版本号:' version
+        read -p '请输入要更新文件所属的用户:' username
+        if [ -z $version ]; then
+            echo '该操作没有指定版本号,操作中断'
+            exit
+        fi
+        if [ ! -z $username ]; then
+            cat $filepath | grep '*' | grep "$username" | grep "$version" | awk -F '*' '{print $2}' | awk '{print $4}'
+        else
+            cat $filepath | grep '*' | grep "$version" | awk -F '*' '{print $2}' | awk '{print $4}'
+        fi
+    fi
+else
+    echo '非法操作'
+    exit
+fi
+exit
+
+if [ -z $username ]; then
+    echo 需要更新的文件列表:
 else
     if [ -z $version ];then
         svn st -u -v | grep '*' | grep "$username" | awk -F "$username" '{print $2}'

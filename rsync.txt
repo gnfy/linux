@@ -1,0 +1,1 @@
+rsync -vazrt --delete --progress --exclude='.svn' /mnt/win_d/to8tobbs/ -e ssh root@192.168.3.120:/mnt/win_d/wwwroot/to8tobbs/

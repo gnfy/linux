@@ -1,0 +1,12 @@
+#!/bin/bash
+arg_1=$1
+arg_2=$2
+if [ -z "$arg_2" ] ; then
+    log=`svn log -q templates/start/header_xiaoguotu_index.html | sed -n '/r/p' | awk '{print $1}' | awk -F'r' '{print $2}' | head -2 | sed ':a;N;s/\n/:/;ta'`
+    arg_2=$arg_1
+    arg_1=$log
+#else
+    #echo 'OK';
+    #svn diff -r $arg_1 $arg_2
+fi
+svn diff -r $arg_1 $arg_2

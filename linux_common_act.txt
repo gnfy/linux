@@ -1,0 +1,53 @@
+﻿awk 功能
+    awk 过滤显示：
+        awk '/=3=|=4=/{print($0)}' /tmp/20110118_res_sync.log
+        /=3=|=4=/ 正则
+        {print($0)} 可有可无，$0 表示所有列，$1 表示第一列
+        
+    awk -F \" '/dc/{print $2}' app_tech-gu-access_log
+        用 " 作为显示分割符
+
+sed 功能
+    sed -f sedsrc t.txt 其中sedsrc中可以是sed的命令集
+    sed '1d' t.txt 不显示第一行
+    sed '1!d' t.txt 只显示第一行
+    sed '/dc/p' t.txt 会将匹配的行，重复显示
+    sed -n '/dc/p' t.txt 解决了重复显示的问题
+    sed -n 's/dc/dv/p' t.txt 替换dc => dv, 并显示被替换掉的行
+    sed '/dc/,/dv/d' t.txt 不显示dc 或 dv 的行 sed '/dc\dv/d' t.txt
+    
+sed 与 awk 组合
+sed -n '/dc/p' app_tech-gu-access_log | awk -F \" '{print $1 $2}' | awk '{print $4 $7}'
+        
+grep -r "http://uibi" *
+    grep 递归显示带 http://uibi的字符
+    
+批量替换文件名后缀:
+rename .jpg .gif *.jpg
+
+转换编码
+iconv -f gbk -t utf-8 from.txt > to.txt
+
+批量删除
+find /boot -name "*35-27*" |xargs rm
+
+/data/mysql/bin/mysql -uroot -pMfuxsNH -S/tmp/mysql.sock --database=test_auto < feng.sql
+
+sed -n "s/\(#version\).*$/\1 $time/p" `grep "js" -rl manifest/`
+
+#!/bin/bash
+BATH="$1"
+for file in $BATH/* ;
+do
+    echo "$file : $(stat -c %y $file)"
+done
+
+time uniq -c a.txt | sort -r | head -1
+
+time awk '{a[$1]++}END{for (j in a) print a[j],j}' a.txt | sort -r | head -1
+
+insert into mysql.user(Host,User,Password) values("localhost","s523910db0",password("4da26n59"));
+
+grant all privileges on s523910db0.* to s523910db0@localhost identified by '4da26n59';
+
+flush privileges;
