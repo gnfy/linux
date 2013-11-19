@@ -2,7 +2,8 @@
 arg_1=$1
 arg_2=$2
 if [ -z "$arg_2" ] ; then
-    log=`svn log -q $1 | sed -n '/r/p' | awk '{print $1}' | awk -F'r' '{print $2}' | head -2 | sed ':a;N;s/\n/:/;ta'`
+    #log=`svn log -q $1 | sed -n '/r/p' | awk '{print $1}' | awk -F'r' '{print $2}' | head -2 | sed ':a;N;s/\n/:/;ta'`
+    log=`svn log -q $arg_1 | sed -n '/r/p' | awk '{print $1}' | awk -F'r' '{print $2}' | head -1`
     arg_2=$arg_1
     arg_1=$log
 #else
