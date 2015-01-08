@@ -63,4 +63,4 @@ if [ -z "$p2" ] ; then
     echo -n "$h2 数据库密码: " ; stty -echo ; read p2; stty echo; echo
 fi
 
-mysqldump -u $u1 -p'$p1' -h $h1 --port=$port1 --add-drop-table --skip-lock-tables $db1 | mysql -u $u2 -p'$p2' -h $h2 --port=$port2 -C $db2
+mysqldump -u $u1 -p'$p1' -h $h1 --port=$port1 --add-drop-table -c --skip-lock-tables $db1 | mysql -u $u2 -p'$p2' -h $h2 --port=$port2 -C $db2
