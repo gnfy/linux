@@ -13,7 +13,7 @@ EOF
 
 DIR=`dirname $0`
 
-CSS_DIR="$DIR/css_test"
+CSS_DIR="$DIR/../images"
 
 # less模块前缀
 mod_prefix='mod-'
@@ -96,7 +96,7 @@ function modNeedCompileFile() {
     f_last_time=`sed -n "/^$filename/p" $compile_ini | awk '{print $2}'`
     if [ $f_last_time  ]; then
         if [ $ftime -ne $f_last_time ]; then
-            sed -i "s@^$filename*@$filename $ftime@" $compile_ini
+            sed -i "s@^$filename.*@$filename $ftime@" $compile_ini
         fi
     else
         echo "$filename $ftime" >> $compile_ini
@@ -117,7 +117,7 @@ function compileFile() {
             f_last_time=`sed -n "/^$i/p" $compile_ini | awk '{print $2}'`
             if [ $f_last_time  ]; then
                 if [ $ftime -ne $f_last_time ]; then
-                    sed -i "s@^$i*@$i $ftime@" $compile_ini
+                    sed -i "s@^$i.*@$i $ftime@" $compile_ini
                 fi
             else
                 echo "$i $ftime" >> $compile_ini
@@ -128,4 +128,8 @@ function compileFile() {
     tmp_arr=''
 }
 
+while :
+do
 compileStart
+sleep 1
+done
